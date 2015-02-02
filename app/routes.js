@@ -1,4 +1,7 @@
 // app/routes.js
+var tinderbot = require('tinderbot');
+var client = new tinderbot();
+var _ = require('underscore')
 
 module.exports = function(app, passport) {
 
@@ -7,16 +10,35 @@ module.exports = function(app, passport) {
     res.render('index.hbs'); // load the index.ejs file
   });
 
-  // route for login form
-  // route for processing the login form
-  // route for signup form
-  // route for processing the signup form
-
   // route for showing the profile page
   app.get('/profile', isLoggedIn, function(req, res) {
     res.render('profile.hbs', {
       user : req.user // get the user out of session and pass to template
     });
+  });
+
+  app.post('/fuckit', function (req, res) {
+    client.FBClientId = req.user.facebook.id;
+    client.FBClientSecret = req.user.facebook.token;
+    client.mainLoop = function() {
+      client.client.getRecommendations(10, function (error, data) {
+        _.chain(data.results)
+        .pluck('_id')
+        .each(function (id) {
+          console.log(id);
+          client.client.like(id, function (error, data) {
+            if (data.matched) {
+              client.client.sendMessage(
+                id,
+                "Will fuck for foooood..."
+              );
+            }
+          });
+        });
+      });
+    }
+
+    client.live();
   });
 
   // =====================================

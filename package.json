@@ -20,6 +20,8 @@
     "passport-facebook": "^1.0.3",
     "passport-local": "^1.0.0",
     "serve-favicon": "~2.2.0",
-    "tinderjs": "^1.0.8"
+    "tinderbot": "^0.8.6",
+    "tinderjs": "^1.0.8",
+    "underscore": "^1.7.0"
   }
 }
